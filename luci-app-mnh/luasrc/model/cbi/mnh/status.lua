@@ -19,21 +19,21 @@ end
 local o = s:option(DummyValue, "status", translate("Status"))
 o.rawhtml = true
 
-local o = s:option(Button, "button_disabled", translate("Enable/Disable"))
-function o.render(self, section, scope)
+local o = s:option(Button, "_disabled", translate("Enable/Disable"))
+function o.cfgvalue(self, section, scope)
 	local v = self.map:get(section, "disabled")
 	if v == nil or v == 0 then
 		self.title = translate("Enabled")
 		self.inputstyle = "save"
+		self._value = 0
 	else
 		self.title = translate("Disabled")
 		self.inputstyle = "reset"
+		self._value = 1
 	end
-	Button.render(self, section, scope)
 end
 function o.write(self, section, value)
-	local v = self.map:get(section, "disabled")
-	if v == nil or v == 0 then
+	if self._value == 0 then
 		self.map:set(section, "disabled", 1)
 	else
 		self.map:del(section, "disabled")

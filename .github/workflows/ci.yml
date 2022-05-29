@@ -8,7 +8,7 @@ jobs:
     name: Build for ${{ matrix.arch }}
     runs-on: ubuntu-latest
     env:
-      packages: mnh
+      packages: mnh ${{ matrix.packages }}
     strategy:
       fail-fast: false
       matrix:
@@ -44,6 +44,9 @@ jobs:
           # - powerpc_464fp
           # - powerpc_8540
           - x86_64
+        include:
+          - arch: x86_64
+            packages: luci-app-mnh
 
     steps:
       - name: Checkout

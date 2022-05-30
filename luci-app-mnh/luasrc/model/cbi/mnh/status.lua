@@ -47,9 +47,9 @@ function o.cfgvalue(self, section)
 	local str = ""
 
 	str = str .. kvmsg:format(translate("Type"), self.map:get(section, "type") or "")
-	str = str .. kvmsg:format(translate("port"), self.map:get(section, "port") or "0")
-	str = str .. kvmsg:format(translate("server"), self.map:get(section, "server") or "")
-	str = str .. kvmsg:format(translate("service"), self.map:get(section, "service") or "")
+	str = str .. kvmsg:format(translate("Port"), self.map:get(section, "port") or "0")
+	str = str .. kvmsg:format(translate("Server"), self.map:get(section, "server") or "")
+	str = str .. kvmsg:format(translate("Service"), self.map:get(section, "service") or "")
 
 	return str
 end
@@ -64,21 +64,21 @@ local tpl_script = tpl.Template(nil, [[
 						if(e) {
 							switch(st[i].status) {
 								case "not running":
-									e.innerHTML = `<font color="red"><%=translate("not running")%></font>`;
+									e.innerHTML = `<font color="red"><%=translate("Not running")%></font>`;
 									break;
 								case "connecting":
-									e.innerHTML = `<font color="orange"><%=translate("connecting")%></font>`;
+									e.innerHTML = `<font color="orange"><%=translate("Connecting")%></font>`;
 									break;
 								case "fail":
-									e.innerHTML = `<font color="red"><%=translate("fail")%></font>` + "<br />"
+									e.innerHTML = `<font color="red"><%=translate("Fail")%></font>` + "<br />" +
 													`<font color="red">${st[i].error}</font>`;
 									break;
 								case "success":
-									e.innerHTML = `<font color="green"><%=translate("success")%></font>` + "<br />" + 
+									e.innerHTML = `<font color="green"><%=translate("Success")%></font>` + "<br />" + 
 													`<font color="blue">${st[i].addr}</font>`;
 									break;
 								case "disconnected":
-									e.innerHTML = `<font color="orange"><%=translate("disconnected")%></font>` + "<br />" + 
+									e.innerHTML = `<font color="orange"><%=translate("Disconnected")%></font>` + "<br />" + 
 													`<font color="blue">${st[i].addr}</font>`;
 									break;
 								default:

@@ -12,6 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        branch:
+          - openwrt-21.02
         arch:
           - aarch64_cortex-a53
           - aarch64_cortex-a72
@@ -55,7 +57,7 @@ jobs:
       - name: Build ${{ env.packages }}
         uses: openwrt/gh-action-sdk@v5
         env:
-          ARCH: ${{ matrix.arch }}
+          ARCH: ${{ matrix.arch }}${{ matrix.branch && format('-{0}', matrix.branch) || ''}}
           PACKAGES: ${{ env.packages }}
 
       - name: Upload artifacts

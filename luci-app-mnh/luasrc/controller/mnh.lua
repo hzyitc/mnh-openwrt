@@ -7,6 +7,7 @@ function index()
 	entry({"admin", "services", "mnh"}, cbi("mnh/status"), _("mnh"))
 
 	entry({"admin", "services", "mnh", "status"}, call("mnh_status"))
+	entry({"admin", "services", "mnh", "instance"}, cbi("mnh/instance")).leaf = true
 end
 
 function mnh_status()

@@ -8,8 +8,12 @@ local m = Map("mnh", translate("mnh"))
 local s = m:section(TypedSection, "instance", translate("Instance"))
 s.template = "cbi/tblsection"
 s.anonymous = true
--- s.addremove = true
--- s.extedit = dsp.build_url("admin", "services", "mnh", "instance", "%s")
+s.addremove = true
+s.extedit = dsp.build_url("admin", "services", "mnh", "instance", "%s")
+function s.create(self, section)
+	local name = TypedSection.create(self, section)
+	luci.http.redirect(self.extedit % name)
+end
 
 local o = s:option(DummyValue, "id", translate("ID"))
 function o.cfgvalue(self, s)

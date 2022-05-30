@@ -23,11 +23,11 @@ local o = s:option(Button, "_disabled", translate("Enable/Disable"))
 function o.cfgvalue(self, section, scope)
 	local v = self.map:get(section, "disabled")
 	if v == nil or v == 0 then
-		self.title = translate("Enabled")
+		self.inputtitle = translate("Enabled")
 		self.inputstyle = "save"
 		self._value = 0
 	else
-		self.title = translate("Disabled")
+		self.inputtitle = translate("Disabled")
 		self.inputstyle = "reset"
 		self._value = 1
 	end

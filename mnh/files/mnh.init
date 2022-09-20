@@ -32,13 +32,16 @@ parse() {
 	mkdir -p "/var/run/mnh"
 	touch "/var/run/mnh/$name"
 	chown nobody "/var/run/mnh/$name"
-	local hook='echo -e "%e\n%m\n%p\n%a"'
+
+	iptables -t "filter" -L "MNH" >/dev/null 2>&1 || fw3 reload
+
+	local hook="/usr/share/mnh/hook.sh '$name' '$type' '%e' '%m' '%p' '%a'"
 
 	procd_open_instance "$name"
-	procd_set_param command "$PROG" "$type" --routerForward none --event-hook "sh -c '$hook >/var/run/mnh/$name'" --server "$server" --mode "$mode" --service "$service" --port "$port" --id "$id"
+	procd_set_param command "$PROG" "$type" --routerForward none --event-hook "$hook" --server "$server" --mode "$mode" --service "$service" --port "$port" --id "$id"
 	procd_set_param stdout 1
 	procd_set_param stderr 1
-	procd_set_param user "nobody"
+	# procd_set_param user "nobody"
 	# [ $respawn -eq 1 ] && procd_set_param respawn
 	procd_close_instance
 }
@@ -50,4 +53,8 @@ start_service() {
 
 service_triggers() {
 	procd_add_reload_trigger "$NAME"
+}
+
+stop_service() {
+	iptables -t "filter" -F "MNH" 2>/dev/null
 }

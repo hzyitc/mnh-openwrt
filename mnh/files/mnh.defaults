@@ -5,6 +5,14 @@ uci -q batch <<-EOF >/dev/null
 	add ucitrack mnh
 	set ucitrack.@mnh[-1].init=mnh
 	commit ucitrack
+
+	delete firewall.mnh
+	set firewall.mnh=include
+	set firewall.mnh.type=script
+	set firewall.mnh.path=/usr/share/mnh/firewall.include
+	set firewall.mnh.family=ipv4
+	set firewall.mnh.reload=1
+	commit firewall
 EOF
 
 exit 0

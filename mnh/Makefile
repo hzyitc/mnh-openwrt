@@ -49,6 +49,9 @@ define Package/mnh/install
 	$(INSTALL_CONF) ./files/mnh.config $(1)/etc/config/mnh
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_BIN) ./files/mnh.defaults $(1)/etc/uci-defaults/99-mnh
+	$(INSTALL_DIR) $(1)/usr/share/mnh/
+	$(INSTALL_BIN) ./files/firewall.include $(1)/usr/share/mnh/firewall.include
+	$(INSTALL_BIN) ./files/hook.sh $(1)/usr/share/mnh/hook.sh
 endef
 
 $(eval $(call BuildPackage,mnh))

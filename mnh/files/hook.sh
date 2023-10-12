@@ -21,6 +21,24 @@ remove_iptables_rule() {
 	iptables -t "filter" -D "MNH" -p $type -m $type --dport $port -j ACCEPT
 }
 
+nft_check_and_append() {
+	nft list chain inet fw4 "mnh" | grep -q "$*" 2>/dev/null \
+	|| nft add rule inet fw4 "mnh" $@
+}
+
+insert_nft_rule() {
+	nft_check_and_append $type dport $port accept
+}
+
+remove_nft_rule() {
+	handle="$(
+		nft list chain inet fw4 "mnh" \
+		| grep "$type dport $port accept" \
+		| sed -E 's/^.*# handle ([0-9]+)$/\1/'
+	)"
+	nft rule delete inet fw4 "mnh" handle $handle
+}
+
 main() {
 	cat <<-EOF >"/var/run/mnh/$name"
 		${event}
@@ -31,11 +49,19 @@ main() {
 
 	case "$event" in
 		success)
-			insert_iptables_rule
+			if fw4 >/dev/null; then
+				insert_nft_rule
+			else
+				insert_iptables_rule
+			fi
 			;;
 
 		disconnected)
-			remove_iptables_rule
+			if fw4 >/dev/null; then
+				remove_nft_rule
+			else
+				remove_iptables_rule
+			fi
 			;;
 
 	esac

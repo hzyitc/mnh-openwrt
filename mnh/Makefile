@@ -50,7 +50,8 @@ define Package/mnh/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_BIN) ./files/mnh.defaults $(1)/etc/uci-defaults/99-mnh
 	$(INSTALL_DIR) $(1)/usr/share/mnh/
-	$(INSTALL_BIN) ./files/firewall.include $(1)/usr/share/mnh/firewall.include
+	$(INSTALL_BIN) ./files/firewall3.include $(1)/usr/share/mnh/firewall3.include
+	$(INSTALL_BIN) ./files/firewall4.include $(1)/usr/share/mnh/firewall4.include
 	$(INSTALL_BIN) ./files/hook.sh $(1)/usr/share/mnh/hook.sh
 endef
 

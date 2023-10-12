@@ -33,7 +33,11 @@ parse() {
 	touch "/var/run/mnh/$name"
 	chown nobody "/var/run/mnh/$name"
 
-	iptables -t "filter" -L "MNH" >/dev/null 2>&1 || fw3 reload
+	if fw4 >/dev/null; then
+		nft list chain inet fw4 "mnh" >/dev/null 2>&1 || fw4 reload
+	else
+		iptables -t "filter" -L "MNH" >/dev/null 2>&1 || fw3 reload
+	fi
 
 	local hook="/usr/share/mnh/hook.sh '$name' '$type' '%e' '%m' '%p' '%a'"
 
@@ -56,5 +60,9 @@ service_triggers() {
 }
 
 stop_service() {
-	iptables -t "filter" -F "MNH" 2>/dev/null
+	if fw4 >/dev/null; then
+		nft flush chain inet fw4 "mnh" 2>/dev/null
+	else
+		iptables -t "filter" -F "MNH" 2>/dev/null
+	fi
 }

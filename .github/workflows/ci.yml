@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Build ${{ env.packages }}
         uses: openwrt/gh-action-sdk@v5
@@ -61,7 +61,7 @@ jobs:
           PACKAGES: ${{ env.packages }}
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.arch }}
           path: bin/packages/${{ matrix.arch }}/action/*.ipk
@@ -70,11 +70,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install hub
+
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: artifacts/
 
